@@ -1,6 +1,6 @@
 {
   "name": "bunyan-hub-logger",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "log to bunyan-hub",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,10 @@
     "debug",
     "log"
   ],
-  "author": "undoZen <opensource@undozen.com>",
+  "author": {
+    "name": "undoZen",
+    "email": "opensource@undozen.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/undoZen/bunyan-hub-logger/issues"

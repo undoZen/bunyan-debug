@@ -1,5 +1,7 @@
 'use strict';
 var logger = require('./index');
+var util = require('util');
+var Console = require('console').Console;
 
 var replaced;
 module.exports = function replaceDebug(namePrefix) {
@@ -8,20 +10,45 @@ module.exports = function replaceDebug(namePrefix) {
 
     var log = logger({
         namePrefix: namePrefix,
-        name: name,
+        name: 'console'
     });
 
-    function _debug(name) {
-        return log.trace.bind(log);
-    }
-
-    var Module = module.constructor;
-    var nativeLoad = Module._load;
-    Module._load = function (request, parent, isMain) {
-        if (request === 'debug') {
-            // exports
-            return _debug
+    function BunyanConsole(stdout, stderr) {
+        if (!(this instanceof BunyanConsole)) {
+            return new BunyanConsole(stdout, stderr);
         }
-        return nativeLoad.apply(this, arguments);
+        Console.apply(this, arguments);
+    }
+    BunyanConsole.prototype = Object.create(Console);
+
+    BunyanConsole.prototype.trace = function trace() {
+        // copied from iojs source
+        var err = new Error;
+        err.name = 'Trace';
+        err.message = util.format.apply(this, arguments);
+        Error.captureStackTrace(err, trace);
+        log.trace(err.stack); // modified this line
     };
+
+    BunyanConsole.prototype.log = log.debug.bind(log);
+    BunyanConsole.prototype.dir = function (object, options) {
+        log.trace({
+                object: object,
+            },
+            util.inspect(object, util._extend({
+                customInspect: false
+            }, options))
+        );
+    };
+    BunyanConsole.prototype.info = log.info.bind(log);
+    BunyanConsole.prototype.warn = log.warn.bind(log);
+    BunyanConsole.prototype.error = log.error.bind(log);
+
+    var bc = new BunyanConsole({
+        write: function () {}
+    });
+
+    for (var k in bc) {
+        GLOBAL.console[k] = bc[k];
+    }
 };

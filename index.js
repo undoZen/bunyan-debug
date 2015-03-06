@@ -6,6 +6,7 @@ var env = process.env.NODE_ENV || 'development';
 var pubStream = require('bunyan-pub-stream');
 
 var stdSerializers = Object.create(bunyan.stdSerializers);
+exports.stdSerializers = stdSerializers;
 stdSerializers.req = function (req) {
     if (!req || !req.connection) {
         return req;
@@ -28,7 +29,9 @@ stdSerializers.res = function (res) {
 };
 
 module.exports = function (opts) {
-    opts = opts || {};
+    opts = typeof opts === 'string' ? {
+        name: opts
+    } : opts || {};
     var ss = stdSerializers;
     if (opts.stdSerializers) {
         ss = Object.create(stdSerializers);
