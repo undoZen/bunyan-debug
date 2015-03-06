@@ -29,7 +29,7 @@
     "bunyan": "^1.3.4"
   },
   "dependencies": {
-    "bunyan-pub-stream": "^0.1.0",
+    "bunyan-pub-stream": "^0.2.1",
     "lodash.assign": "^3.0.0",
     "uuid": "^2.0.1"
   }

@@ -3,7 +3,7 @@ var bunyan = require('bunyan');
 var uuid = require('uuid');
 var assign = require('lodash.assign');
 var env = process.env.NODE_ENV || 'development';
-var pubStream = require('bunyan-pub-stream');
+var PubStream = require('bunyan-pub-stream');
 
 var stdSerializers = Object.create(bunyan.stdSerializers);
 exports.stdSerializers = stdSerializers;
@@ -41,9 +41,8 @@ module.exports = function (opts) {
         (opts.developmentLevel ? opts.developmentLevel : 'trace') :
         (opts.productionLevel ? opts.productionLevel : 'debug');
     var streams = [{
-        type: 'raw',
         level: level,
-        stream: pubStream,
+        stream: new PubStream(),
     }];
     var name = opts.namePrefix ? opts.namePrefix + opts.name : opts.name;
     return bunyan.createLogger({
