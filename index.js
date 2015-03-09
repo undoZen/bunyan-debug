@@ -28,7 +28,7 @@ stdSerializers.res = function (res) {
     }
 };
 
-module.exports = function (opts) {
+exports = module.exports = function (opts) {
     opts = typeof opts === 'string' ? {
         name: opts
     } : opts || {};
@@ -51,3 +51,6 @@ module.exports = function (opts) {
         streams: streams
     });
 }
+
+exports.replaceDebug = require('./replaceDebug');
+exports.replaceConsole = require('./replaceConsole');
