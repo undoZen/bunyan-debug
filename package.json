@@ -6,6 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "index.js",
+    "replaceConsole.js",
+    "replaceDebug.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/undoZen/bunyan-hub-logger.git"

@@ -1,4 +1,7 @@
-var log = require('../')('hello');
+var log = require('../')({
+    name: 'hello',
+    app: 'logger-test'
+});
 //setTimeout(function () {
 log.trace('log trace');
 log.debug('log debug');

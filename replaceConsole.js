@@ -4,12 +4,12 @@ var util = require('util');
 var Console = require('console').Console;
 
 var replaced;
-module.exports = function replaceDebug(namePrefix) {
+module.exports = function replaceDebug(app) {
     if (replaced) return;
     replaced = true;
 
     var log = logger({
-        namePrefix: namePrefix,
+        app: app,
         name: 'console'
     });
 
@@ -43,6 +43,17 @@ module.exports = function replaceDebug(namePrefix) {
     BunyanConsole.prototype.info = log.info.bind(log);
     BunyanConsole.prototype.warn = log.warn.bind(log);
     BunyanConsole.prototype.error = log.error.bind(log);
+    BunyanConsole.prototype.timeEnd = function (label) {
+        var time = this._times.get(label);
+        if (!time) {
+            throw new Error('No such label: ' + label);
+        }
+        var duration = Date.now() - time;
+        this.log({
+            label: label,
+            duration: duration
+        }, '%s: %dms', label, duration);
+    };
 
     var bc = new BunyanConsole({
         write: function () {}

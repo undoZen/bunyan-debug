@@ -2,13 +2,13 @@
 var logger = require('./index');
 
 var replaced;
-module.exports = function replaceDebug(namePrefix) {
+module.exports = function replaceDebug(app) {
     if (replaced) return;
     replaced = true;
 
     function _debug(name) {
         var log = logger({
-            namePrefix: namePrefix,
+            app: app,
             name: name,
         });
         return log.trace.bind(log);

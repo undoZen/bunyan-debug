@@ -44,12 +44,15 @@ exports = module.exports = function (opts) {
         level: level,
         stream: new PubStream(),
     }];
-    var name = opts.namePrefix ? opts.namePrefix + opts.name : opts.name;
-    return bunyan.createLogger({
-        name: name,
+    var logger = bunyan.createLogger({
+        name: opts.name,
         serializers: ss,
         streams: streams
     });
+    if (opts.app) {
+        logger.fields.app = opts.app;
+    }
+    return logger;
 }
 
 exports.replaceDebug = require('./replaceDebug');
