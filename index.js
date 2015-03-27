@@ -44,6 +44,9 @@ exports = module.exports = function (opts) {
         level: level,
         stream: new PubStream(),
     }];
+    if (Array.isArray(opts.streams)) {
+        streams = streams.concat(streams);
+    }
     var logger = bunyan.createLogger({
         name: opts.name,
         serializers: ss,

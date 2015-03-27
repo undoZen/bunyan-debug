@@ -33,7 +33,8 @@ logger(object opts) or logger(string opts)
 logger({
     name: 'api', // currently debugging/logging module of your app/project
     app: 'project-a', // your app/project name
-    serializers: {} // bunyan serializers, defaults to a modified bunyan.stdSerializers which append a `uuid.v4()` to req.req_id and res.req.req_id for req and res
+    serializers: {}, // bunyan serializers, defaults to a modified bunyan.stdSerializers which append a `uuid.v4()` to req.req_id and res.req.req_id for req and res
+    streams: [], // default is using bunyan-pub-stream to send logs to local bunyan-hub, you can add more bunyan writable stream here.
 });
 if opts object is string it will be convert to { name: opts }
 */
