@@ -7,7 +7,7 @@ var PubStream = require('bunyan-pub-stream');
 
 var stdSerializers = Object.create(bunyan.stdSerializers);
 exports.stdSerializers = stdSerializers;
-stdSerializers.req = function (req) {
+stdSerializers.req = function(req) {
     if (!req || !req.connection) {
         return req;
     }
@@ -18,7 +18,7 @@ stdSerializers.req = function (req) {
         req_id: req.req_id
     });
 };
-stdSerializers.res = function (res) {
+stdSerializers.res = function(res) {
     if (res && res.req) {
         return assign({}, bunyan.stdSerializers.res(res), {
             req_id: stdSerializers.req(res.req).req_id
@@ -28,14 +28,15 @@ stdSerializers.res = function (res) {
     }
 };
 
-exports = module.exports = function (opts) {
+exports = module.exports = function(opts) {
     opts = typeof opts === 'string' ? {
         name: opts
     } : opts || {};
     var ss = stdSerializers;
-    if (opts.stdSerializers) {
+    var serializers = opts.serializers || opts.stdSerializers;
+    if (serializers) {
         ss = Object.create(stdSerializers);
-        assign(ss, opts.stdSerializers);
+        assign(ss, serializers);
     }
     var level = 'development' === env ?
         (opts.developmentLevel ? opts.developmentLevel : 'trace') :
