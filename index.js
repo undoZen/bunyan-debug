@@ -6,7 +6,6 @@ var env = process.env.NODE_ENV || 'development';
 var PubStream = require('bunyan-pub-stream');
 
 var stdSerializers = Object.create(bunyan.stdSerializers);
-exports.stdSerializers = stdSerializers;
 stdSerializers.req = function(req) {
     if (!req || !req.connection) {
         return req;
@@ -59,5 +58,6 @@ exports = module.exports = function(opts) {
     return logger;
 }
 
+exports.stdSerializers = stdSerializers;
 exports.replaceDebug = require('./replaceDebug');
 exports.replaceConsole = require('./replaceConsole');
