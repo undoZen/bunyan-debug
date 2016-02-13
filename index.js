@@ -27,6 +27,7 @@ stdSerializers.res = function(res) {
     }
 };
 
+var pubStreams = [];
 exports = module.exports = function(opts) {
     opts = typeof opts === 'string' ? {
         name: opts
@@ -40,9 +41,11 @@ exports = module.exports = function(opts) {
     var level = 'development' === env ?
         (opts.developmentLevel ? opts.developmentLevel : 'trace') :
         (opts.productionLevel ? opts.productionLevel : 'debug');
+    var nps = new PubStream();
+    pubStreams.push(nps);
     var streams = [{
         level: level,
-        stream: new PubStream(),
+        stream: nps,
     }];
     if (Array.isArray(opts.streams)) {
         streams = streams.concat(streams);
@@ -57,6 +60,13 @@ exports = module.exports = function(opts) {
     }
     return logger;
 }
+
+exports.endAll = function () {
+    pubStreams.forEach(function (ps) {
+        console.log(ps);
+        ps.end();
+    });
+};
 
 exports.stdSerializers = stdSerializers;
 exports.replaceDebug = require('./replaceDebug');
