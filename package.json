@@ -1,6 +1,6 @@
 {
   "name": "bunyan-hub-logger",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "log to bunyan-hub",
   "main": "index.js",
   "scripts": {
