@@ -63,7 +63,6 @@ exports = module.exports = function(opts) {
 
 exports.endAll = function () {
     pubStreams.forEach(function (ps) {
-        console.log(ps);
         ps.end();
     });
 };
